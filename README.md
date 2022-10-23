@@ -1,15 +1,15 @@
 <!-- PROJECT LOGO -->
 <br />
-<p align="left">
+<p align="center">
   <a href="https://firefly-iii.org/">
     <img src="https://raw.githubusercontent.com/firefly-iii/firefly-iii/develop/.github/assets/img/logo-small.png" alt="Firefly III" width="120" height="178">
   </a>
-</p>
-<p align="right">
+	&nbsp
   <a href="https://n26.com/en-eu">
     <img src="https://www.czerwona-skarbonka.pl/wp-content/uploads/2020/10/n26-logo.png" alt="N26" width="120" height="82">
   </a>
-</p>	
+</p>
+
   <h1 align="center">Firefly III Implementation on N26 landscape</h1>
 
   <p align="center">
