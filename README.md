@@ -29,6 +29,8 @@
 - [Monitoring and logging](#monitoring-and-logging)
 - [Corporate user authentication and authorization](#Corporate-user-authentication-and-authorization)
 - [Data Import](#Data-Import)
+- [Conclusion](#Conclusion)
+
  
 
 <!-- /MarkdownTOC -->
@@ -73,11 +75,18 @@ In order to make application reachable on https://firefly3.n26.com domain from a
 
 
 ## Corporate user authentication and authorization
+### Authentication
+In order to enable user authentication securely and with less user interaction SSO principles can be used. Custom SAML app on Google Workspace(GSuite) can be created and used as IdP, whereas on application side SP endpoints should be exposed. User will be authenticated based his/her records on GSuite directory
 
+### Authorization
+Application will receive and process SAML request from GSuite and based on attributes user role will be assigned to user with required privileges inside the application. To achieve this, application role names can be created as groups in GSuite directory and by this way only authorized users inside the company will access the application
 
 
 ## Data Import
 
+
+
+## Conclusion
 
 
 
