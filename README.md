@@ -21,6 +21,11 @@
 
 <!-- MarkdownTOC autolink="true" -->
 - [Purpose](#purpose)
+- [Prerequisites](#Prerequisites)
+- [Hosting](#Hosting)
+- [Scalability and Availability](#Scalability and Availability)
+- [Network](#Network)
+- [Architectural Overview](#Architectural Overview)
 
 <!-- /MarkdownTOC -->
 
@@ -32,7 +37,7 @@ Purpose of this document is to provide both architectural and operational overvi
 
 Initial configuration that is provided on landscape is that, the corporate domain is managed on Amazon Route53 service and corporate email server runs on Google Workspace(GSuite). Considering that main cloud provider is AWS, all setup will be taken place on AWS environment
 
-## Installation
+## Hosting
 
 ### Application:
 There are several ways of installing FireFly III PHP application layer on AWS:
@@ -45,11 +50,22 @@ System requires relational database and for setup instead of bearing with infra-
 
 
 ## Scalability and Availability
-In order to make application reachable on https://firefly3.n26.com domain from anywhere securely with high availability, several AWS can be used such as ELB, ASG, CloudFront and Route53.
- - From ELB services Layer4 (Applciation LB) can be used (no need for Layer7 - NLB) . ALB will be responsible for balancing the load by filtering HTTP requests and route them across machines (target groups) with activated Healthcheck of EC2 instances. Additionally, TLS offloading in order to decrease decryption workload on targets and Sticky Sessions for not losing the session on client side can be enabled on ALB. ALB can be used in 2 hosting methods - on ECS and EC2. In order to balance the load on EKS, AWS Load Balancer Controller add-on should be deployed on your cluster.
- - For horizontal scalability -  
- - For content delivery CloudFront
- - For availability on domain Route53 service should be configured
+In order to make application reachable on https://firefly3.n26.com domain from anywhere securely with high availability, several AWS can be used such as ELB, ASG, CloudFront/AWS Global Accelerator and Route53.
+ - From ELB services Layer4 (Application LB) can be used (no need for Layer7 - NLB). ALB will be responsible for balancing the load by filtering HTTP requests and route them across machines (target groups) with activated Healthcheck of EC2 instances. Additionally, TLS offloading in order to decrease decryption workload on targets and Sticky Sessions for not losing the session on client side can be enabled on ALB. ALB can be used in 2 hosting methods - on ECS and EC2. In order to balance the load on EKS, AWS Load Balancer Controller add-on should be deployed on your cluster.
+ - For horizontal scalability -  ASG (Autoscaling Groups) can be implemented on top of EC2 instances and it will ensure min&max&desired number of instances based on metrics you selected on CloudWatch alarms(with step scaling policy). This feature can be used on all hosting methods with a little bit different configurations
+ - (Optional) For global availability in lesser latency AWS Global Accelerator can be used on top of ALB. It will also add extra security layer against DDOS attacks
+ - For availability on N26.com domain Route53 service should be configured and domainname of our ALB should be added as a new alias record.
+
+## Networking
+
+
+
+## Architectural overview
+
+
+
+
+
 
 
 
