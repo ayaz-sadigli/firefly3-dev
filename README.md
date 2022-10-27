@@ -14,20 +14,19 @@
   <p align="center">
     A free and open source personal finance manager
     <br />
-    <a href="https://docs.firefly-iii.org/"><strong>Explore Firefly III official documentation</strong></a>
+    <a href="https://docs.firefly-iii.org/"><strong>Firefly III official documentation</strong></a>
     <br />
     <br />
   </p>
 
 <!-- MarkdownTOC autolink="true" -->
 - [Purpose](#purpose)
-- [The Firefly III eco-system](#the-firefly-iii-eco-system)
 
 <!-- /MarkdownTOC -->
 
 ## Purpose
 
-Purpose of this document is to provide both architectural and operational overview of Firefly III setup on N26 environment. This can be a literature for Solution Architects as well as DevOps engineers. 
+Purpose of this document is to provide both architectural and operational overview of Firefly III setup on N26 environment. This can be a literature for Solution Architects as well as DevOps engineers(AWS CLI and kubectl script files will be provided)
 
 ## Prerequisites
 
@@ -42,10 +41,15 @@ There are several ways of installing FireFly III PHP application layer on AWS:
   - more advanced way would be starting K8S cluster on EKS backing it up by either Fargate(serverless) or EC2
 
 ### Database:
-Platform requires relational database and for setup instead of bearing with infra-hosting and volume/storage management (in case of stateful K8S), I would prefer PAAS by AWS which in our case is Amazon RDS.
+System requires relational database and for setup instead of bearing with infra-hosting and volume/storage management (in case of stateful K8S), I would prefer PAAS by AWS which in our case is Amazon RDS.
 
 
-###Scalability and Availability:
+## Scalability and Availability
+In order to make application reachable on https://firefly3.n26.com domain from anywhere securely with high availability, several AWS can be used such as ELB, ASG, CloudFront and Route53.
+ - From ELB services Layer4 (Applciation LB) can be used (no need for Layer7 - NLB) . ALB will be responsible for balancing the load by filtering HTTP requests and route them across machines (target groups) with activated Healthcheck of EC2 instances. Additionally, TLS offloading in order to decrease decryption workload on targets and Sticky Sessions for not losing the session on client side can be enabled on ALB. ALB can be used in 2 hosting methods - on ECS and EC2. In order to balance the load on EKS, AWS Load Balancer Controller add-on should be deployed on your cluster.
+ - For horizontal scalability -  
+ - For content delivery CloudFront
+ - For availability on domain Route53 service should be configured
 
 
 
