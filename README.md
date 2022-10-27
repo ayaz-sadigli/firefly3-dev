@@ -22,10 +22,14 @@
 <!-- MarkdownTOC autolink="true" -->
 - [Purpose](#purpose)
 - [Prerequisites](#Prerequisites)
+- [Architectural Overview](#architectural-overview)
 - [Hosting](#Hosting)
 - [Scalability and Availability](#scalability-and-availability)
 - [Networking](#Networking)
-- [Architectural Overview](#architectural-overview)
+- [Monitoring and logging](#monitoring-and-logging)
+- [Corporate user authentication and authorization](#Corporate-user-authentication-and-authorization)
+- [Data Import](#Data-Import)
+ 
 
 <!-- /MarkdownTOC -->
 
@@ -36,6 +40,10 @@ Purpose of this document is to provide both architectural and operational overvi
 ## Prerequisites
 
 Initial configuration that is provided on landscape is that, the corporate domain is managed on Amazon Route53 service and corporate email server runs on Google Workspace(GSuite). Considering that main cloud provider is AWS, all setup will be taken place on AWS environment
+
+## Architectural overview
+
+
 
 ## Hosting
 
@@ -60,11 +68,15 @@ In order to make application reachable on https://firefly3.n26.com domain from a
 
 
 
-## Architectural overview
+## Monitoring and logging 
 
 
 
+## Corporate user authentication and authorization
 
+
+
+## Data Import
 
 
 
