@@ -23,9 +23,9 @@
 - [Purpose](#purpose)
 - [Prerequisites](#Prerequisites)
 - [Hosting](#Hosting)
-- [Scalability and Availability](#Scalability and Availability)
-- [Network](#Network)
-- [Architectural Overview](#Architectural Overview)
+- [Scalability and Availability](#Scalability)
+- [Networking](#Networking)
+- [Architectural Overview](#Architectural)
 
 <!-- /MarkdownTOC -->
 
