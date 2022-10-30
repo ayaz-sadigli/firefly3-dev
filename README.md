@@ -89,19 +89,21 @@ In order to enable user authentication securely and with less user interaction S
 #### Sample SAML request&response should like this:
 <details><summary>Request</summary>
 <p>
-```ruby
-   got1
+````
 ```
-
+Look! You can see my backticks.
+```
+````
 </p>
 </details>
 <br/>
 <details><summary>Response</summary>
 <p>
-```ruby
-    got
+````
 ```
-
+Look! You can see my backticks.
+```
+````
 </p>
 </details>
 
