@@ -44,6 +44,8 @@ Purpose of this document is to provide both architectural and operational overvi
 Initial configuration that is provided on landscape is that, the corporate domain is managed on Amazon Route53 service and corporate email server runs on Google Workspace(GSuite). Considering that main cloud provider is AWS, all setup will be taken place on AWS environment
 
 ## Architectural overview
+Below Shared Diagram represents "classic" way of installation of Firefly III application on N26 landscape
+<img src="https://raw.githubusercontent.com/firefly-iii/firefly-iii/develop/.github/assets/img/logo-small.png" alt="Firefly III" width="120" height="178">
 
 
 
@@ -56,7 +58,7 @@ There are several ways of installing FireFly III PHP application layer on AWS:
   - more advanced way would be starting K8S cluster on EKS backing it up by either Fargate(serverless) or EC2
 
 ### Database:
-System requires relational database and for setup instead of bearing with infra-hosting and volume/storage management (in case of stateful K8S), I would prefer PAAS by AWS which in our case is Amazon RDS.
+System requires relational database and for setup instead of bearing with infra-hosting and volume/storage management (in case of stateful K8S), PAAS by AWS is preferable which in our case is Amazon RDS. For resilency DB is replicated to standby db and covered by RDS proxy in order to send the traffic to right database. For security purposes, database credentials are stored in AWS Secrets Manager.
 
 
 ## Scalability and Availability
