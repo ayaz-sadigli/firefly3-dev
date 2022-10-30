@@ -46,7 +46,7 @@ Initial configuration that is provided on landscape is that, the corporate domai
 ## Architectural overview
 Below Shared Diagram represents "classic" way of installation of Firefly III application on N26 landscape
 <br />
-<img src="https://github.com/ayaz-sadigli/firefly3-dev/blob/main/N26-classic-setup.png" alt="Firefly III - N26 - Classic" width="1800" height="500">
+<img src="https://github.com/ayaz-sadigli/firefly3-dev/blob/main/N26-classic-setup.png" alt="Firefly III - N26 - Classic" width="2000" height="500">
 
 ## Hosting
 
