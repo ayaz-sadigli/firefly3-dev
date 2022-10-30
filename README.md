@@ -89,26 +89,11 @@ In order to enable user authentication securely and with less user interaction S
 #### Sample SAML request&response should like this:
 <details><summary>Request</summary>
 <p>
-````
-```
-Look! You can see my backticks.
-```
-````
+```xml
+<your XML here>
+.`
 </p>
 </details>
-<br/>
-<details><summary>Response</summary>
-<p>
-````
-```
-Look! You can see my backticks.
-```
-````
-</p>
-</details>
-
-
-
 
 ### Authorization
 Application will receive and process SAML request from GSuite and based on attributes user role will be assigned to user with required privileges inside the application. To achieve this, application role names can be created as groups in GSuite directory and by this way only authorized users inside the company will access the application. Currently, there are [8 user roles](#Roles) in application side which should be created as groups with ####same name on Google Workspace directory as well, this [documentation](https://support.google.com/a/users/answer/9303222?hl=en) can be referred on implementation.
