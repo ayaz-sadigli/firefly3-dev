@@ -56,6 +56,8 @@ There are several ways of installing FireFly III PHP application layer on AWS:
   - more faster way on installation would be using Docker container technology and spin up ECS task either on Fargate(serverless) or EC2 connected to it
   - more advanced way would be starting K8S cluster on EKS backing it up by either Fargate(serverless) or EC2
 
+#### *In our example we will use classic approach by hosting php application on Apache server installed on EC2 Linux machine.
+
 ### Database:
 System requires relational database and for setup instead of bearing with infra-hosting and volume/storage management (in case of stateful K8S), PAAS by AWS is preferable which in our case is Amazon RDS. For resilency DB is replicated to standby db and covered by RDS proxy in order to send the traffic to right database. For security purposes, database credentials are stored in AWS Secrets Manager.
 
