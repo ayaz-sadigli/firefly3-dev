@@ -89,9 +89,9 @@ In order to enable user authentication securely and with less user interaction S
 #### Sample SAML request&response should like this:
 <details><summary>Request</summary>
 <p>
-</p>
-</details>
-````
+  
+#### SAML2.0 Request
+
 ```
 <saml:AuthnRequest xmlns:saml="urn:oasis:names:tc:SAML:2.0:protocol"
                    AssertionConsumerServiceURL="https://firefly3.n26.com/auth/sso"
@@ -114,7 +114,70 @@ In order to enable user authentication securely and with less user interaction S
     </saml2p:RequestedAuthnContext>
 </saml:AuthnRequest>
 ```
-````
+ 
+</p>
+</details>
+<br/>
+<details><summary>Response</summary>
+<p>
+    
+#### SAML2.0 Response
+  
+```
+<samlp:Response xmlns:samlp="urn:oasis:names:tc:SAML:2.0:protocol"
+                ID=""
+                Version="2.0"
+                IssueInstant=""
+                Destination="https://firefly3.n26.com/auth/sso"
+                InResponseTo=""
+                >
+    <Issuer xmlns="urn:oasis:names:tc:SAML:2.0:assertion">Google IDP url</Issuer>
+    <samlp:Status>
+        <samlp:StatusCode Value="urn:oasis:names:tc:SAML:2.0:status:Success" />
+    </samlp:Status>
+    <Assertion xmlns="urn:oasis:names:tc:SAML:2.0:assertion"
+               ID=""
+               IssueInstant=""
+               Version="2.0"
+               >
+        <Issuer>Google IDP url</Issuer>
+        <Subject>
+            <NameID Format="urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified">Ayaz</NameID>
+            <SubjectConfirmation Method="urn:oasis:names:tc:SAML:2.0:cm:bearer">
+                <SubjectConfirmationData InResponseTo=""
+                                         NotOnOrAfter=""
+                                         Recipient="https://firefly3.n26.com/auth/sso"
+                                         />
+            </SubjectConfirmation>
+        </Subject>
+        <Conditions NotBefore=""
+                    NotOnOrAfter=""
+                    >
+            <AudienceRestriction>
+                <Audience>@IDP url</Audience>
+            </AudienceRestriction>
+        </Conditions>
+        <AttributeStatement>
+            <Attribute Name="mail">
+                <AttributeValue>ayaz.sadigli@n26.com</AttributeValue>
+            </Attribute>
+            <Attribute Name="groups">
+                <AttributeValue>CHANGE_REPETITIONS</AttributeValue>
+                <AttributeValue>CHANGE_PIGGY_BANKS</AttributeValue>
+            </Attribute>
+        </AttributeStatement>
+        <AuthnStatement AuthnInstant=""
+                        SessionIndex=""
+                        >
+            <AuthnContext>
+                <AuthnContextClassRef>urn:oasis:names:tc:SAML:2.0:ac:classes:PasswordProtectedTransport</AuthnContextClassRef>
+            </AuthnContext>
+        </AuthnStatement>
+    </Assertion>
+</samlp:Response>
+```
+</p>
+</details>
 
 ### Authorization
 Application will receive and process SAML request from GSuite and based on attributes user role will be assigned to user with required privileges inside the application. To achieve this, application role names can be created as groups in GSuite directory and by this way only authorized users inside the company will access the application. Currently, there are [8 user roles](#Roles) in application side which should be created as groups with same name on Google Workspace directory as well, this [documentation](https://support.google.com/a/users/answer/9303222?hl=en) can be referred on implementation.
