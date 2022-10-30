@@ -89,86 +89,16 @@ In order to enable user authentication securely and with less user interaction S
 #### Sample SAML request&response should like this:
 <details><summary>Request</summary>
 <p>
-```xml
-<saml:AuthnRequest xmlns:saml="urn:oasis:names:tc:SAML:2.0:protocol"
-                   AssertionConsumerServiceURL="https://firefly3.n26.com/auth/sso"
-                   ForceAuthn="false"
-                   ID="xxxx"
-                   IsPassive="false"
-                   IssueInstant="@timestamp"
-                   ProtocolBinding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST"
-                   Version="2.0"
-                   >
-    <saml2:Issuer xmlns:saml2="urn:oasis:names:tc:SAML:2.0:assertion">Google IDP url</saml2:Issuer>
-    <saml2p:NameIDPolicy xmlns:saml2p="urn:oasis:names:tc:SAML:2.0:protocol"
-                         AllowCreate="true"
-                         Format="urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified"
-                         />
-    <saml2p:RequestedAuthnContext xmlns:saml2p="urn:oasis:names:tc:SAML:2.0:protocol"
-                                  Comparison="exact"
-                                  >
-        <saml:AuthnContextClassRef xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion">urn:oasis:names:tc:SAML:2.0:ac:classes:PasswordProtectedTransport</saml:AuthnContextClassRef>
-    </saml2p:RequestedAuthnContext>
-</saml:AuthnRequest>
+```
+  sikimin bashi
 ```
 </p>
 </details>
 <br />
-<br />
 <details><summary>Response</summary>
 <p>
-```xml
-<samlp:Response xmlns:samlp="urn:oasis:names:tc:SAML:2.0:protocol"
-                ID=""
-                Version="2.0"
-                IssueInstant=""
-                Destination="https://firefly3.n26.com/auth/sso"
-                InResponseTo=""
-                >
-    <Issuer xmlns="urn:oasis:names:tc:SAML:2.0:assertion">Google IDP url</Issuer>
-    <samlp:Status>
-        <samlp:StatusCode Value="urn:oasis:names:tc:SAML:2.0:status:Success" />
-    </samlp:Status>
-    <Assertion xmlns="urn:oasis:names:tc:SAML:2.0:assertion"
-               ID=""
-               IssueInstant=""
-               Version="2.0"
-               >
-        <Issuer>Google IDP url</Issuer>
-        <Subject>
-            <NameID Format="urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified">Ayaz</NameID>
-            <SubjectConfirmation Method="urn:oasis:names:tc:SAML:2.0:cm:bearer">
-                <SubjectConfirmationData InResponseTo=""
-                                         NotOnOrAfter=""
-                                         Recipient="https://firefly3.n26.com/auth/sso"
-                                         />
-            </SubjectConfirmation>
-        </Subject>
-        <Conditions NotBefore=""
-                    NotOnOrAfter=""
-                    >
-            <AudienceRestriction>
-                <Audience>@IDP url</Audience>
-            </AudienceRestriction>
-        </Conditions>
-        <AttributeStatement>
-            <Attribute Name="mail">
-                <AttributeValue>ayaz.sadigli@n26.com</AttributeValue>
-            </Attribute>
-            <Attribute Name="groups">
-                <AttributeValue>CHANGE_REPETITIONS</AttributeValue>
-                <AttributeValue>CHANGE_PIGGY_BANKS</AttributeValue>
-            </Attribute>
-        </AttributeStatement>
-        <AuthnStatement AuthnInstant=""
-                        SessionIndex=""
-                        >
-            <AuthnContext>
-                <AuthnContextClassRef>urn:oasis:names:tc:SAML:2.0:ac:classes:PasswordProtectedTransport</AuthnContextClassRef>
-            </AuthnContext>
-        </AuthnStatement>
-    </Assertion>
-</samlp:Response>
+```
+  tepesi
 ```
 </p>
 </details>
