@@ -89,7 +89,7 @@ In order to enable user authentication securely and with less user interaction S
 #### Sample SAML request&response should like this:
 <details><summary>Request</summary>
 <p>
-```
+```xml
 <saml:AuthnRequest xmlns:saml="urn:oasis:names:tc:SAML:2.0:protocol"
                    AssertionConsumerServiceURL="https://firefly3.n26.com/auth/sso"
                    ForceAuthn="false"
@@ -117,7 +117,7 @@ In order to enable user authentication securely and with less user interaction S
 <br />
 <details><summary>Response</summary>
 <p>
-```
+```xml
 <samlp:Response xmlns:samlp="urn:oasis:names:tc:SAML:2.0:protocol"
                 ID=""
                 Version="2.0"
@@ -138,14 +138,14 @@ In order to enable user authentication securely and with less user interaction S
         <Subject>
             <NameID Format="urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified">Ayaz</NameID>
             <SubjectConfirmation Method="urn:oasis:names:tc:SAML:2.0:cm:bearer">
-                <SubjectConfirmationData InResponseTo="@"
-                                         NotOnOrAfter="@"
+                <SubjectConfirmationData InResponseTo=""
+                                         NotOnOrAfter=""
                                          Recipient="https://firefly3.n26.com/auth/sso"
                                          />
             </SubjectConfirmation>
         </Subject>
-        <Conditions NotBefore="@"
-                    NotOnOrAfter="@"
+        <Conditions NotBefore=""
+                    NotOnOrAfter=""
                     >
             <AudienceRestriction>
                 <Audience>@IDP url</Audience>
