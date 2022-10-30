@@ -87,6 +87,19 @@ In order to enable user authentication securely and with less user interaction S
 #### *Due to lack of SAML SSO libraries on Firefly III, currently, this configuration needs development on application side
 
 #### Sample SAML request&response should like this:
+<details><summary>CLICK ME</summary>
+<p>
+
+#### We can hide anything, even code!
+
+```ruby
+   puts "Hello World"
+```
+
+</p>
+</details>
+
+
 <details><summary>Request</summary>
 <p>
 ````
