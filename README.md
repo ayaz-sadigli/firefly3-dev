@@ -89,7 +89,6 @@ In order to enable user authentication securely and with less user interaction S
 #### Sample SAML request&response should like this:
 <details><summary>Request</summary>
 <p>
-````
 ```
 <saml:AuthnRequest xmlns:saml="urn:oasis:names:tc:SAML:2.0:protocol"
                    AssertionConsumerServiceURL="https://firefly3.n26.com/auth/sso"
@@ -100,7 +99,7 @@ In order to enable user authentication securely and with less user interaction S
                    ProtocolBinding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST"
                    Version="2.0"
                    >
-    <saml2:Issuer xmlns:saml2="urn:oasis:names:tc:SAML:2.0:assertion">https://accounts.google.com/o/saml2/initsso?idpid=C0342luej&spid=413081654109&forceauthn=false</saml2:Issuer>
+    <saml2:Issuer xmlns:saml2="urn:oasis:names:tc:SAML:2.0:assertion">Google IDP url</saml2:Issuer>
     <saml2p:NameIDPolicy xmlns:saml2p="urn:oasis:names:tc:SAML:2.0:protocol"
                          AllowCreate="true"
                          Format="urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified"
@@ -112,14 +111,12 @@ In order to enable user authentication securely and with less user interaction S
     </saml2p:RequestedAuthnContext>
 </saml:AuthnRequest>
 ```
-````
 </p>
 </details>
 <br />
 <br />
 <details><summary>Response</summary>
 <p>
-````
 ```
 <samlp:Response xmlns:samlp="urn:oasis:names:tc:SAML:2.0:protocol"
                 ID=""
@@ -139,7 +136,7 @@ In order to enable user authentication securely and with less user interaction S
                >
         <Issuer>Google IDP url</Issuer>
         <Subject>
-            <NameID Format="urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified">SADIGA01</NameID>
+            <NameID Format="urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified">Ayaz</NameID>
             <SubjectConfirmation Method="urn:oasis:names:tc:SAML:2.0:cm:bearer">
                 <SubjectConfirmationData InResponseTo="@"
                                          NotOnOrAfter="@"
@@ -173,7 +170,6 @@ In order to enable user authentication securely and with less user interaction S
     </Assertion>
 </samlp:Response>
 ```
-````
 </p>
 </details>
 
