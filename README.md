@@ -79,10 +79,34 @@ In order to make application reachable on https://firefly3.n26.com domain from a
 
 ## Corporate user authentication and authorization
 ### Authentication
-In order to enable user authentication securely and with less user interaction SSO principles can be used. Custom SAML app on Google Workspace(GSuite) can be created and used as IdP, [GSuite documentation](https://support.google.com/a/answer/6087519?hl=en) can be referred for Custom SAML app setup. on application side SP endpoints should be exposed. User will be authenticated based his/her records on GSuite directory
+In order to enable user authentication securely and with less user interaction SSO principles can be used. Custom SAML app on Google Workspace(GSuite) can be created and used as IdP, [Google workspace documentation](https://support.google.com/a/answer/6087519?hl=en) can be referred for Custom SAML app setup. On application side SP endpoints should be exposed. User will be authenticated based his/her records on GSuite directory. The sequence diagram below offers more specificity to SP-initiated login process:
+<br />
+<img src="https://github.com/ayaz-sadigli/firefly3-dev/blob/main/Auth-N26-classic-setup.png" alt="Firefly III - Google Workspace" width="1200" height="900">
+
+
+#### *Due to lack of SAML SSO libraries on Firefly III, currently, this configuration needs development on application side
 
 ### Authorization
-Application will receive and process SAML request from GSuite and based on attributes user role will be assigned to user with required privileges inside the application. To achieve this, application role names can be created as groups in GSuite directory and by this way only authorized users inside the company will access the application
+Application will receive and process SAML request from GSuite and based on attributes user role will be assigned to user with required privileges inside the application. To achieve this, application role names can be created as groups in GSuite directory and by this way only authorized users inside the company will access the application. Currently, there are [8 user roles](#Roles) in application side which should be created as groups with ####same name on Google Workspace directory as well, this [documentation](https://support.google.com/a/users/answer/9303222?hl=en) can be referred on implementation.
+
+
+#### Roles:
+Authorization:
+    'roles' => [
+        UserRole::READ_ONLY           => [],
+        UserRole::CHANGE_TRANSACTIONS => [],
+        UserRole::CHANGE_RULES        => [],
+        UserRole::CHANGE_PIGGY_BANKS  => [],
+        UserRole::CHANGE_REPETITIONS  => [],
+        UserRole::VIEW_REPORTS        => [],
+        UserRole::FULL                => [],
+        UserRole::OWNER               => [],
+]
+
+#### Access Settings on GW Groups:
+<br />
+<img src="https://github.com/ayaz-sadigli/firefly3-dev/blob/main/GoogleWorkspace-Groups-N26.png" alt="Google Workspace Groups" width="1200" height="900">
+
 
 
 ## Data Import
