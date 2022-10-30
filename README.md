@@ -64,8 +64,8 @@ System requires relational database and for setup instead of bearing with infra-
 
 ## Scalability and Availability
 In order to make application reachable on https://firefly3.n26.com domain from anywhere securely with high availability, several AWS can be used such as ELB, ASG, CloudFront/AWS Global Accelerator and Route53.
- - From ELB services Layer4 (Application LB) can be used (no need for Layer7 - NLB). ALB will be responsible for balancing the load by filtering HTTP requests and route them across machines (target groups) with activated Healthcheck of EC2 instances. Additionally, TLS offloading in order to decrease decryption workload on targets and Sticky Sessions for not losing the session on client side can be enabled on ALB. ALB can be used in 2 hosting methods - on ECS and EC2. In order to balance the load on EKS, AWS Load Balancer Controller add-on should be deployed on your cluster.
- - For horizontal scalability -  ASG (Autoscaling Groups) can be implemented on top of EC2 instances and it will ensure min&max&desired number of instances based on metrics you selected on CloudWatch alarms(with step scaling policy). This feature can be used on all hosting methods with a little bit different configurations
+ - From ELB services Layer4 (Application LB) can be used (no need for Layer7 - NLB). ALB will be responsible for balancing the load by filtering HTTP requests and route them across machines (target groups) with activated Healthcheck of EC2 instances. Additionally, TLS offloading in order to decrease decryption workload on targets and Sticky Sessions for not losing the session on client side can be enabled on ALB.
+ - For horizontal scalability -  ASG (Autoscaling Groups) can be implemented on top of EC2 instances and it will ensure min&max&desired number of instances based on metrics you selected on CloudWatch alarms(with step scaling policy).
  - (Optional) For global availability in lesser latency AWS Global Accelerator can be used on top of ALB. It will also add extra security layer against DDOS attacks
  - For availability on N26.com domain Route53 service should be configured and domainname of our ALB/Global Accelerator should be added as a new alias record.
 
@@ -79,7 +79,7 @@ In order to make application reachable on https://firefly3.n26.com domain from a
 
 ## Corporate user authentication and authorization
 ### Authentication
-In order to enable user authentication securely and with less user interaction SSO principles can be used. Custom SAML app on Google Workspace(GSuite) can be created and used as IdP, whereas on application side SP endpoints should be exposed. User will be authenticated based his/her records on GSuite directory
+In order to enable user authentication securely and with less user interaction SSO principles can be used. Custom SAML app on Google Workspace(GSuite) can be created and used as IdP, GSuite documentation[https://support.google.com/a/answer/6087519?hl=en] can be referred for Custom SAML app setup. on application side SP endpoints should be exposed. User will be authenticated based his/her records on GSuite directory
 
 ### Authorization
 Application will receive and process SAML request from GSuite and based on attributes user role will be assigned to user with required privileges inside the application. To achieve this, application role names can be created as groups in GSuite directory and by this way only authorized users inside the company will access the application
