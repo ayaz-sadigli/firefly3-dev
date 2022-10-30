@@ -91,17 +91,14 @@ Application will receive and process SAML request from GSuite and based on attri
 
 
 #### Roles:
-Authorization:
-    'roles' => [
-        UserRole::READ_ONLY           => [],
-        UserRole::CHANGE_TRANSACTIONS => [],
-        UserRole::CHANGE_RULES        => [],
-        UserRole::CHANGE_PIGGY_BANKS  => [],
-        UserRole::CHANGE_REPETITIONS  => [],
-        UserRole::VIEW_REPORTS        => [],
-        UserRole::FULL                => [],
-        UserRole::OWNER               => [],
-]
+READ_ONLY
+CHANGE_TRANSACTIONS
+CHANGE_RULES
+CHANGE_PIGGY_BANKS
+CHANGE_REPETITIONS
+VIEW_REPORTS
+FULL
+OWNER
 
 #### Access Settings on GW Groups:
 <br />
