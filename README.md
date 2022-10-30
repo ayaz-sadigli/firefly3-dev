@@ -58,8 +58,7 @@ There are several ways of installing FireFly III PHP application layer on AWS:
 
 #### *In our example we will use classic approach by hosting php application on Apache server installed on EC2 Linux machine.
 
-Here are some configuration details for application hosting:
-<details><summary>EC2</summary>
+<details><summary>Configuration details for application hosting</summary>
 <p>
 Let's assume that you already finished networking setup.
   
@@ -84,7 +83,7 @@ Let's assume that you already finished networking setup.
     --subnet-id <subnet id> \
     --user-data file://launch-script.txt
 ```
-#### Launch Script (User-data)
+#### Launch Script (User-data) (Reference - https://gist.github.com/Engr-AllanG/34e77a08e1482284763fff429cdd92fa)
   
 ```
 #!/bin/bash  
@@ -152,6 +151,39 @@ System requires relational database and for setup instead of bearing with infra-
 In order to make application reachable on https://firefly3.n26.com domain from anywhere securely with high availability, several AWS can be used such as ELB, ASG, CloudFront/AWS Global Accelerator and Route53.
  - From ELB services Layer4 (Application LB) can be used (no need for Layer7 - NLB). ALB will be responsible for balancing the load by filtering HTTP requests and route them across machines (target groups) with activated Healthcheck of EC2 instances. Additionally, TLS offloading in order to decrease decryption workload on targets and Sticky Sessions for not losing the session on client side can be enabled on ALB.
  - For horizontal scalability -  ASG (Autoscaling Groups) can be implemented on top of EC2 instances and it will ensure min&max&desired number of instances based on metrics you selected on CloudWatch alarms(with step scaling policy).
+<details><summary>Configuration details for Auto Scaling Groups</summary>
+<p>
+Let's assume that you already finished networking and application hosting setup. 
+
+#### Create AMI of current instance
+  
+```
+aws ec2 create-image --instance-id <Instance Id> --name ASGCLI
+#You should save ImageId in a separate file for later usage.  
+```  
+
+#### Create Launch template
+  
+```
+aws ec2 create-launch-template \
+    --launch-template-name TemplateWebServer \
+    --version-description AutoScalingVersion1 \
+    --launch-template-data '{"NetworkInterfaces":[{"DeviceIndex":0,"AssociatePublicIpAddress":false,"Groups":["sg-08d4e7f2321254357"],"DeleteOnTermination":false}],"ImageId":"ami-04b81c294769991d8","InstanceType":"t2.micro","TagSpecifications":[{"ResourceType":"instance","Tags":[{"Key":"Name","Value":"WebServerASG"}]}]}' \
+    --region eu-central-1
+```    
+  
+#### Create Auto Scaling Group
+  
+```
+aws autoscaling create-auto-scaling-group \
+    --auto-scaling-group-name WebServerASG \
+    --launch-template "LaunchTemplateName=TemplateWebServer" \
+    --min-size 2 --max-size 5 --desired-capacity 2 
+    --availability-zones "eu-central-1a" "eu-central-1b"
+```      
+  
+</p>
+</details>  
  - (Optional) For global availability in lesser latency AWS Global Accelerator can be used on top of ALB. It will also add extra security layer against DDOS attacks
  - For availability on N26.com domain Route53 service should be configured and domainname of our ALB/Global Accelerator should be added as a new alias record.
 
