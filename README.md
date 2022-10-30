@@ -25,7 +25,7 @@
 - [Architectural Overview](#architectural-overview)
 - [Hosting](#Hosting)
 - [Scalability and Availability](#scalability-and-availability)
-- [Networking](#Networking)
+- [Networking](#networking)
 - [Monitoring and logging](#monitoring-and-logging)
 - [Corporate user authentication and authorization](#Corporate-user-authentication-and-authorization)
 - [Data Import](#Data-Import)
@@ -58,6 +58,92 @@ There are several ways of installing FireFly III PHP application layer on AWS:
 
 #### *In our example we will use classic approach by hosting php application on Apache server installed on EC2 Linux machine.
 
+Here are some configuration details for application hosting:
+<details><summary>EC2</summary>
+<p>
+Let's assume that you already finished networking setup.
+  
+#### SSH key generation
+  
+```
+    aws ec2 create-key-pair \
+    --key-name demo-key-pair \
+    --output text \
+    --query “KeyMaterial” \
+    --region eu-central-1 > ./demo-key-pair.pem
+```  
+#### EC2 launch
+  
+```
+     aws ec2 run-instances \
+    --image-id <ami-id> \
+    --count 1 \
+    --instance-type t2.nano \
+    --key-name demo-key-pair \
+    --security-group-ids <security group id> \
+    --subnet-id <subnet id> \
+    --user-data file://launch-script.txt
+```
+#### Launch Script (User-data)
+  
+```
+#!/bin/bash  
+yum update
+yum upgrade
+yum install nginx curl -y
+yum install software-properties-common
+#add-yum-repository ppa:ondrej/php
+#yum update
+yum install -y php7.4 php7.4-{cli,zip,gd,fpm,json,common,mysql,zip,mbstring,curl,xml,bcmath,imap,ldap,intl}
+#Ngnix server will replace Apache, that's why we need to disable it
+systemctl stop apache2
+systemctl disable apache2
+#Backup ngnix file
+cd /etc/nginx/sites-enabled/
+mv default{,.bak}
+#Create firefly.conf in sites-enabled folder and then paste in the config below
+cat <<EOT >> /etc/nginx/sites-enabled/firefly.conf
+server {
+        listen       80 default_server;
+        listen       [::]:80 default_server;
+        #server_name  subdomain.domain.com;
+        root         /var/www/html/firefly-iii/public;
+        index index.html index.htm index.php;
+
+        location / {
+                try_files $uri /index.php$is_args$args;
+                autoindex on;
+                sendfile off;
+       }
+
+        location ~ \.php$ {
+        fastcgi_pass unix:/run/php/php7.4-fpm.sock;
+        fastcgi_index index.php;
+        fastcgi_read_timeout 240;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        include fastcgi_params;
+        fastcgi_split_path_info ^(.+.php)(/.+)$;
+        }
+
+    }
+EOT
+#Restart
+systemctl restart nginx php7.4-fpm
+#Install firefly - change the version number at the end of the command below to whatever the latest is
+cd /var/www/html/
+composer create-project grumpydictator/firefly-iii --no-dev --prefer-dist firefly-iii 5.4.6
+cd /var/www/html/firefly-iii
+php artisan migrate:refresh --seed
+php artisan firefly-iii:upgrade-database
+php artisan passport:install
+  
+#Restart
+systemctl restart nginx php7.4-fpm
+
+```
+</p>
+</details>
+
 ### Database:
 System requires relational database and for setup instead of bearing with infra-hosting and volume/storage management (in case of stateful K8S), PAAS by AWS is preferable which in our case is Amazon RDS. For resilency DB is replicated to standby db and covered by RDS proxy in order to send the traffic to right database. For security purposes, database credentials are stored in AWS Secrets Manager.
 
@@ -70,7 +156,7 @@ In order to make application reachable on https://firefly3.n26.com domain from a
  - For availability on N26.com domain Route53 service should be configured and domainname of our ALB/Global Accelerator should be added as a new alias record.
 
 ## Networking
-
+Because application will be hosted in single region multi AZ environment, certain network configurations shoud be met on VPC creation.
 
 
 ## Monitoring and logging 
