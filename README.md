@@ -87,8 +87,10 @@ In order to enable user authentication securely and with less user interaction S
 #### *Due to lack of SAML SSO libraries on Firefly III, currently, this configuration needs development on application side
 
 #### Sample SAML request&response should like this:
+<details><summary>Request</summary>
+<p>
 ````
-`Request`
+```
 <saml:AuthnRequest xmlns:saml="urn:oasis:names:tc:SAML:2.0:protocol"
                    AssertionConsumerServiceURL="https://firefly3.n26.com/auth/sso"
                    ForceAuthn="false"
@@ -111,9 +113,14 @@ In order to enable user authentication securely and with less user interaction S
 </saml:AuthnRequest>
 ```
 ````
-</br>
+</p>
+</details>
+<br />
+<br />
+<details><summary>Response</summary>
+<p>
 ````
-`Response`
+```
 <samlp:Response xmlns:samlp="urn:oasis:names:tc:SAML:2.0:protocol"
                 ID=""
                 Version="2.0"
@@ -167,6 +174,9 @@ In order to enable user authentication securely and with less user interaction S
 </samlp:Response>
 ```
 ````
+</p>
+</details>
+
 
 
 ### Authorization
