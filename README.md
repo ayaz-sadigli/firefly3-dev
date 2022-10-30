@@ -89,11 +89,11 @@ In order to enable user authentication securely and with less user interaction S
 #### Sample SAML request&response should like this:
 <details><summary>Request</summary>
 <p>
-```
-function test() {
-  console.log("notice the blank line before this function?");
-}
-```
+    ````
+    function test() {
+      console.log("notice the blank line before this function?");
+    }
+    ````
 </p>
 </details>
 
