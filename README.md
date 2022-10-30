@@ -89,17 +89,21 @@ In order to enable user authentication securely and with less user interaction S
 #### Sample SAML request&response should like this:
 <details><summary>Request</summary>
 <p>
+````
 ```
   sikimin bashi
 ```
+````
 </p>
 </details>
 <br />
 <details><summary>Response</summary>
 <p>
+````
 ```
   tepesi
 ```
+````
 </p>
 </details>
 
