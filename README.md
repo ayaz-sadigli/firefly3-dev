@@ -79,26 +79,54 @@ In order to make application reachable on https://firefly3.n26.com domain from a
 
 ## Corporate user authentication and authorization
 ### Authentication
-In order to enable user authentication securely and with less user interaction SSO principles can be used. Custom SAML app on Google Workspace(GSuite) can be created and used as IdP, [Google workspace documentation](https://support.google.com/a/answer/6087519?hl=en) can be referred for Custom SAML app setup. On application side SP endpoints should be exposed. User will be authenticated based his/her records on GSuite directory. The sequence diagram below offers more specificity to SP-initiated login process:
+In order to enable user authentication securely and with less user interaction SSO principles can be used. Custom SAML app on Google Workspace(GSuite) can be created and used as IdP, [Google workspace documentation](https://support.google.com/a/answer/6087519?hl=en) can be referred for Custom SAML app setup. On application side Access URL and Entity ID should be exposed. User will be authenticated based his/her records on GSuite directory with SAML 2.0 specification. The sequence diagram below offers more specificity to SP-initiated login process:
 <br />
 <img src="https://github.com/ayaz-sadigli/firefly3-dev/blob/main/Auth-N26-classic-setup.png" alt="Firefly III - Google Workspace" width="1200" height="900">
 
 
 #### *Due to lack of SAML SSO libraries on Firefly III, currently, this configuration needs development on application side
 
+#### Sample SAML request&response should like this:
+````
+```
+<saml:AuthnRequest xmlns:saml="urn:oasis:names:tc:SAML:2.0:protocol"
+                   AssertionConsumerServiceURL="https://firefly3.n26.com/auth/sso"
+                   ForceAuthn="false"
+                   ID="xxxx"
+                   IsPassive="false"
+                   IssueInstant="@timestamp"
+                   ProtocolBinding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST"
+                   Version="2.0"
+                   >
+    <saml2:Issuer xmlns:saml2="urn:oasis:names:tc:SAML:2.0:assertion">https://accounts.google.com/o/saml2/initsso?idpid=C0342luej&spid=413081654109&forceauthn=false</saml2:Issuer>
+    <saml2p:NameIDPolicy xmlns:saml2p="urn:oasis:names:tc:SAML:2.0:protocol"
+                         AllowCreate="true"
+                         Format="urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified"
+                         />
+    <saml2p:RequestedAuthnContext xmlns:saml2p="urn:oasis:names:tc:SAML:2.0:protocol"
+                                  Comparison="exact"
+                                  >
+        <saml:AuthnContextClassRef xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion">urn:oasis:names:tc:SAML:2.0:ac:classes:PasswordProtectedTransport</saml:AuthnContextClassRef>
+    </saml2p:RequestedAuthnContext>
+</saml:AuthnRequest>
+```
+````
+
+
+
 ### Authorization
 Application will receive and process SAML request from GSuite and based on attributes user role will be assigned to user with required privileges inside the application. To achieve this, application role names can be created as groups in GSuite directory and by this way only authorized users inside the company will access the application. Currently, there are [8 user roles](#Roles) in application side which should be created as groups with ####same name on Google Workspace directory as well, this [documentation](https://support.google.com/a/users/answer/9303222?hl=en) can be referred on implementation.
 
 
-#### Roles:
-READ_ONLY
-CHANGE_TRANSACTIONS
-CHANGE_RULES
-CHANGE_PIGGY_BANKS
-CHANGE_REPETITIONS
-VIEW_REPORTS
-FULL
-OWNER
+#### Roles = Group Names:
+- READ_ONLY
+- CHANGE_TRANSACTIONS
+- CHANGE_RULES
+- CHANGE_PIGGY_BANKS
+- CHANGE_REPETITIONS
+- VIEW_REPORTS
+- FULL
+- OWNER
 
 #### Access Settings on GW Groups:
 <br />
