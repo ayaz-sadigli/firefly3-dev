@@ -81,7 +81,7 @@ In order to make application reachable on https://firefly3.n26.com domain from a
 ### Authentication
 In order to enable user authentication securely and with less user interaction SSO principles can be used. Custom SAML app on Google Workspace(GSuite) can be created and used as IdP, [Google workspace documentation](https://support.google.com/a/answer/6087519?hl=en) can be referred for Custom SAML app setup. On application side Access URL and Entity ID should be exposed. User will be authenticated based his/her records on GSuite directory with SAML 2.0 specification. The sequence diagram below offers more specificity to SP-initiated login process:
 <br />
-<img src="https://github.com/ayaz-sadigli/firefly3-dev/blob/main/Auth-N26-classic-setup.PNG" alt="Firefly III - Google Workspace" width="1200" height="900">
+<img src="https://github.com/ayaz-sadigli/firefly3-dev/blob/main/Auth-N26-classic-setup.PNG" alt="Firefly III - Google Workspace" width="700" height="450">
 
 
 #### *Due to lack of SAML SSO libraries on Firefly III, currently, this configuration needs development on application side
@@ -195,7 +195,7 @@ Application will receive and process SAML request from GSuite and based on attri
 
 #### Access Settings on GW Groups:
 <br />
-<img src="https://github.com/ayaz-sadigli/firefly3-dev/blob/main/GoogleWorkspace-Groups-N26.PNG" alt="Google Workspace Groups" width="1200" height="900">
+<img src="https://github.com/ayaz-sadigli/firefly3-dev/blob/main/GoogleWorkspace-Groups-N26.PNG" alt="Google Workspace Groups" width="700" height="450">
 
 
 
