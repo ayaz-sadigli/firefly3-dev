@@ -89,11 +89,30 @@ In order to enable user authentication securely and with less user interaction S
 #### Sample SAML request&response should like this:
 <details><summary>Request</summary>
 <p>
-    ````
-    function test() {
-      console.log("notice the blank line before this function?");
-    }
-    ````
+````
+```
+  <saml:AuthnRequest xmlns:saml="urn:oasis:names:tc:SAML:2.0:protocol"
+                   AssertionConsumerServiceURL="https://firefly3.n26.com/auth/sso"
+                   ForceAuthn="false"
+                   ID="xxxx"
+                   IsPassive="false"
+                   IssueInstant="xxxx"
+                   ProtocolBinding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST"
+                   Version="2.0"
+                   >
+    <saml2:Issuer xmlns:saml2="urn:oasis:names:tc:SAML:2.0:assertion">Google IDP url</saml2:Issuer>
+    <saml2p:NameIDPolicy xmlns:saml2p="urn:oasis:names:tc:SAML:2.0:protocol"
+                         AllowCreate="true"
+                         Format="urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified"
+                         />
+    <saml2p:RequestedAuthnContext xmlns:saml2p="urn:oasis:names:tc:SAML:2.0:protocol"
+                                  Comparison="exact"
+                                  >
+        <saml:AuthnContextClassRef xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion">urn:oasis:names:tc:SAML:2.0:ac:classes:PasswordProtectedTransport</saml:AuthnContextClassRef>
+    </saml2p:RequestedAuthnContext>
+</saml:AuthnRequest>
+```
+````
 </p>
 </details>
 
