@@ -149,13 +149,31 @@ System requires relational database and for setup instead of bearing with infra-
 <details><summary>Configuration details for Database</summary>
 <p>
   
-  #### Create RDS
+  #### Create RDS proxy
 
 ```
-  test
+ #Wrong one
+ create-db-proxy
+--db-proxy-name firefly3-db
+--engine-family MYSQL
+--auth SecretArn 
+--role-arn XXX
+--vpc-subnet-ids privatedbsubnet1 privatedbsubnet2
+```
+  
+#### Create RDS
+
+```
+aws rds create-db-instance \
+    --db-instance-identifier test-mysql-instance \
+    --db-instance-class db.t3.micro \
+    --engine mysql \
+    --master-username mysql \
+    --master-user-password secret99 \
+    --allocated-storage 20
 ```
 </p>
-</details>
+</details>  
 
 ### Secrets Management:
 For security purposes, database credentials and application secrets will be stored in AWS Secrets Manager. In order to connect service VPC endpoint(privatelink) should be created as well.
