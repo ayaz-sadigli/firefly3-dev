@@ -330,12 +330,44 @@ In order to make application reachable on https://firefly3.n26.com domain from a
     </details> 
   
 ## Networking
-Due to the application will be hosted in single region multi AZ environment, certain network configurations shoud be met on VPC creation.
+Due to the application will be hosted in single region multi AZ environment, certain network configurations shoud be met on VPC creation. Short overview of VPC is shown below:
+<br />
+<img src="https://github.com/ayaz-sadigli/firefly3-dev/blob/main/VPC-N26-classic-setup.png" alt="Firefly III - N26 - VPC" width="2000" height="500">
+
 
 
 ## Monitoring and logging 
+For simple application log setup, Cloudwatch agents should be installed on EC2 instances, log streams on the other hand should be shipped to S3 bucket via Amazon Kinesis for further analysis.
+  
+For monitoring purposes, Cloudwatch metrics should be enabled on Application Load Balancer and as well as on RDS proxy to monitor database connection logs. For health checks policy of EC2 targets on ALB side, custom metrics can also be added by CloudWatch, but this is considered as optional case.
 
+<details><summary>Configuration details for Application logs extraction via CloudWatch</summary>
+<p>
+Let's assume that you already finished all installation setup. 
+     
+#### Configure CloudWatch agent on EC2 instance
 
+```
+  
+```
+  
+#### Create stream on Kinesis
+
+```
+  aws kinesis create-stream --stream-name "Firefly3" --shard-count 1 --region eu-central-1
+```
+  
+#### Put logs into stream
+
+```  
+  aws logs put-destination \
+    --destination-name "Firefly3" \
+    --target-arn "arn:aws:kinesis:eu-central-1:222222222222:stream/Firefly3" \  
+    --role-arn "arn:aws:iam::222222222222:role/YourIAMRoleName" --region eu-central-1
+```
+  
+</p>
+</details> 
 
 ## Corporate user authentication and authorization
 ### Authentication
