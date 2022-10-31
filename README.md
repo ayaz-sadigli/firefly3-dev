@@ -332,7 +332,7 @@ In order to make application reachable on https://firefly3.n26.com domain from a
 ## Networking
 Due to the application will be hosted in single region multi AZ environment, certain network configurations shoud be met on VPC creation. Short overview of VPC is shown below:
 <br />
-<img src="https://github.com/ayaz-sadigli/firefly3-dev/blob/main/VPC-N26-classic-setup.PNG" alt="Firefly III - N26 - VPC" width="2000" height="500">
+<img src="https://github.com/ayaz-sadigli/firefly3-dev/blob/main/VPC-N26-classic-setup.PNG" alt="Firefly III - N26 - VPC" width="2000" height="350">
 
 
 
