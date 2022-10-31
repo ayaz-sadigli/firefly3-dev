@@ -30,6 +30,8 @@
 - [Corporate user authentication and authorization](#Corporate-user-authentication-and-authorization)
 - [Data Import](#Data-Import)
 - [Conclusion](#Conclusion)
+- [Extra CI/CD](#CICD)
+
 
  
 
@@ -128,7 +130,8 @@ server {
 EOT
 #Restart
 systemctl restart nginx php7.4-fpm
-#Install firefly - change the version number at the end of the command below to whatever the latest is
+  
+#Install firefly from internal packagist server
 cd /var/www/html/
 composer create-project grumpydictator/firefly-iii --no-dev --prefer-dist firefly-iii 5.4.6
 cd /var/www/html/firefly-iii
@@ -500,4 +503,15 @@ After short investigation, to import data from Google Sheets database connector 
 ## Conclusion
 In conclusion, this document covers (not fully) architectural overview FireflyIII application on N26 landscape. As a hosting solution on AWS cloud EC2 instances had been chosen, personally, I would prefer more modern and cloud native approaches such as containerization by using ECS service backed up by same EC2 instances, this would give flexibility on CI/CD part of application development. It is possible to go further and create EKS cluster, but due to time limits this document does not covers all possible scenarios
 
+  
+## CI/CD
+In case, if application will be developed and if there will be internal development team then Azure DevOps can be used to automate whole CI process
+
+In current setup, Composer is being used as package manager for php application, therefore, initial solution for pipeline would be after all required tests to build and package the code from repository with all required libraries to Internal Repository (which can be hosted on separate VPC). This will help composers on EC2 instances to retireve latest package from Internal repository, but in order to run that command, Amazon EC2 Simple Systems Manager should be used. The package download process can be automated by AWS Lambda. The whole CI/CD setup would look like this:
+  
+  
+  ![image](https://user-images.githubusercontent.com/116470724/198924649-d23749d4-7041-483a-818e-02a5d06d2e4c.png)
+
+
+ 
 
