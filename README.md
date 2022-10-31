@@ -144,8 +144,37 @@ systemctl restart nginx php7.4-fpm
 </details>
 
 ### Database:
-System requires relational database and for setup instead of bearing with infra-hosting and volume/storage management (in case of stateful K8S), PAAS by AWS is preferable which in our case is Amazon RDS. For resilency DB is replicated to standby db and covered by RDS proxy in order to send the traffic to right database. For security purposes, database credentials are stored in AWS Secrets Manager.
+System requires relational database and for setup instead of bearing with infra-hosting and volume/storage management (in case of stateful K8S), PAAS by AWS is preferable which in our case is Amazon RDS. For resilency DB is replicated to standby db and covered by RDS proxy in order to send the traffic to right database. 
+  
 
+
+### Secrets Management:
+For security purposes, database credentials and application secrets will be stored in AWS Secrets Manager. In order to connect service VPC endpoint(privatelink) should be created as well.
+
+    <details><summary>Configuration details for Secrets Management</summary>
+    <p>
+    Let's assume that you already finished networking, application hosting and database setup. 
+
+    #### Create VPC Endpoint to connect AWS Secrets manager
+
+    ```
+    aws ec2 create-vpc-endpoint \
+    --vpc-id vpc-1a2b3c4d \
+    --service-name com.amazonaws.eu-central-1.rds \
+    --route-table-ids rtb-11aa22bb 
+    ``` 
+
+    #### Create secret on AWS Secrets manager
+
+    ```
+    aws secretsmanager create-secret \
+    --name Dev-Database \
+    --description "Dev MySQL db credentials." \
+    --secret-string "{\"user\":\"mysqladmin\",\"password\":\"EXAMPLE-PASSWORD\"}"
+    ```       
+    </p>
+    </details>  
+  
 
 ## Scalability and Availability
 In order to make application reachable on https://firefly3.n26.com domain from anywhere securely with high availability, several AWS can be used such as ELB, ASG, CloudFront/AWS Global Accelerator and Route53.
