@@ -491,10 +491,13 @@ Application will receive and process SAML request from GSuite and based on attri
 
 
 ## Data Import
-
-
+After short investigation, to import data from Google Sheets database connector add-on can be used from [Google Workspace Marketspace](https://workspace.google.com/marketplace/app/database_connector/66785429937). 
+  
+ - In order to avoid direct connections with main database, Staging database instance can be created on separate VPC and be connected to main database via VPC endpoint. 
+ - Data can be migrated between 2 rds db instances by using AWS Data Pipeline service (Further details, need to be investigated)
+  
 
 ## Conclusion
-
+In conclusion, this document covers (not fully) architectural overview FireflyIII application on N26 landscape. As a hosting solution on AWS cloud EC2 instances had been chosen, personally, I would prefer more modern and cloud native approaches such as containerization by using ECS service backed up by same EC2 instances, this would give flexibility on CI/CD part of application development. It is possible to go further and create EKS cluster, but due to time limits this document does not covers all possible scenarios
 
 
