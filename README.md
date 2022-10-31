@@ -237,9 +237,43 @@ In order to make application reachable on https://firefly3.n26.com domain from a
  - (Optional) For global availability in lesser latency AWS Global Accelerator can be used on top of ALB. It will also add extra security layer against DDOS attacks
  
   - For availability on N26.com domain Route53 service should be configured and domainname of our ALB/Global Accelerator should be added as a new alias record.
-
+    
+    <details><summary>Configuration details for Route53 update</summary>
+    <p>
+    Let's assume that you already finished networking, application hosting, autoscaling and load balancing setup. 
+     
+    #### Create alias resource record set
+            
+    ```  
+    {
+      "Comment": "Creating Alias resource record sets in Route 53",
+      "Changes": [
+        {
+          "Action": "CREATE",
+          "ResourceRecordSet": {
+            "Name": "firefly3.n26.com",
+            "Type": "A",
+            "AliasTarget": {
+              "HostedZoneId": "Z1H1FL5HABSF5",
+              "DNSName": "ALB-xxxxxxxx.us-west-2.elb.amazonaws.com",
+              "EvaluateTargetHealth": false
+            }
+          }
+        }
+      ]
+    }      
+    ```      
+    #### Create alias resource record set
+            
+    ```  
+    aws route53 change-resource-record-sets --hosted-zone-id ZXXXXXXXXXX --change-batch file://recordset.json      
+    ```      
+    
+    </p>
+    </details> 
+  
 ## Networking
-Because application will be hosted in single region multi AZ environment, certain network configurations shoud be met on VPC creation.
+Due to the application will be hosted in single region multi AZ environment, certain network configurations shoud be met on VPC creation.
 
 
 ## Monitoring and logging 
