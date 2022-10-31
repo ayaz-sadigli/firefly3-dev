@@ -510,8 +510,7 @@ In case, if application will be developed and if there will be internal developm
 In current setup, Composer is being used as package manager for php application, therefore, initial solution for pipeline would be after all required tests to build and package the code from repository with all required libraries to Internal Repository (which can be hosted on separate VPC). This will help composers on EC2 instances to retireve latest package from Internal repository, but in order to run that command, Amazon EC2 Simple Systems Manager should be used. The package download process can be automated by AWS Lambda. The whole CI/CD setup would look like this:
   
   
-  ![image](https://user-images.githubusercontent.com/116470724/198924649-d23749d4-7041-483a-818e-02a5d06d2e4c.png)
-
+![image](https://user-images.githubusercontent.com/116470724/198992115-0484e58b-33e5-4097-b415-349d80459b48.png)
 
  
 
