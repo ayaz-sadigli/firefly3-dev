@@ -149,43 +149,94 @@ System requires relational database and for setup instead of bearing with infra-
 
 ## Scalability and Availability
 In order to make application reachable on https://firefly3.n26.com domain from anywhere securely with high availability, several AWS can be used such as ELB, ASG, CloudFront/AWS Global Accelerator and Route53.
- - From ELB services Layer4 (Application LB) can be used (no need for Layer7 - NLB). ALB will be responsible for balancing the load by filtering HTTP requests and route them across machines (target groups) with activated Healthcheck of EC2 instances. Additionally, TLS offloading in order to decrease decryption workload on targets and Sticky Sessions for not losing the session on client side can be enabled on ALB.
- - For horizontal scalability -  ASG (Autoscaling Groups) can be implemented on top of EC2 instances and it will ensure min&max&desired number of instances based on metrics you selected on CloudWatch alarms(with step scaling policy).
-<details><summary>Configuration details for Auto Scaling Groups</summary>
-<p>
-Let's assume that you already finished networking and application hosting setup. 
 
-#### Create AMI of current instance
+  - For horizontal scalability -  ASG (Autoscaling Groups) can be implemented on top of EC2 instances and it will ensure min&max&desired number of instances based on metrics you selected on CloudWatch alarms(with step scaling policy).
   
-```
-aws ec2 create-image --instance-id <Instance Id> --name ASGCLI
-#You should save ImageId in a separate file for later usage.  
-```  
+    <details><summary>Configuration details for Auto Scaling Groups</summary>
+    <p>
+    Let's assume that you already finished networking and application hosting setup. 
 
-#### Create Launch template
+    #### Create AMI of current instance
+
+    ```
+    aws ec2 create-image --instance-id <Instance Id> --name ASGCLI
+    #You should save ImageId in a separate file for later usage.  
+    ```  
+
+    #### Create Launch template
+
+    ```
+    aws ec2 create-launch-template \
+        --launch-template-name TemplateWebServer \
+        --version-description AutoScalingVersion1 \
+        --launch-template-data '{"NetworkInterfaces":[{"DeviceIndex":0,"AssociatePublicIpAddress":false,"Groups":["sg-08d4e7f2321254357"],"DeleteOnTermination":false}],"ImageId":"ami-04b81c294769991d8","InstanceType":"t2.micro","TagSpecifications":[{"ResourceType":"instance","Tags":[{"Key":"Name","Value":"WebServerASG"}]}]}' \
+        --region eu-central-1
+    ```    
+
+    #### Create Auto Scaling Group
+
+    ```
+    aws autoscaling create-auto-scaling-group \
+        --auto-scaling-group-name Firefly3-ASG \
+        --launch-template "LaunchTemplateName=TemplateWebServer" \
+        --min-size 2 --max-size 5 --desired-capacity 2 
+        --availability-zones "eu-central-1a" "eu-central-1b"
+    ```      
+
+    </p>
+    </details>  
   
-```
-aws ec2 create-launch-template \
-    --launch-template-name TemplateWebServer \
-    --version-description AutoScalingVersion1 \
-    --launch-template-data '{"NetworkInterfaces":[{"DeviceIndex":0,"AssociatePublicIpAddress":false,"Groups":["sg-08d4e7f2321254357"],"DeleteOnTermination":false}],"ImageId":"ami-04b81c294769991d8","InstanceType":"t2.micro","TagSpecifications":[{"ResourceType":"instance","Tags":[{"Key":"Name","Value":"WebServerASG"}]}]}' \
-    --region eu-central-1
-```    
+  - From ELB services Layer4 (Application LB) can be used (no need for Layer7 - NLB). ALB will be responsible for balancing the load by filtering HTTP requests and route them across machines (autoscaling group/target groups) with activated Healthcheck of EC2 instances. Additionally, TLS offloading in order to decrease decryption workload on targets and Sticky Sessions for not losing the session on client side can be enabled on ALB.
   
-#### Create Auto Scaling Group
+    <details><summary>Configuration details for ALB</summary>
+    <p>
+    Let's assume that you already finished networking, application hosting and autoscaling setup. 
+
+    #### Create ALB 
+      
+    ```
+      aws elbv2 create-load-balancer --name Firefly3-ALB  \
+      --subnets subnet-public1 subnet-public2 --security-groups sg-alb
+    ```
+
+    #### Create Target Group with default check settings for a TCP taget group
+      
+    ```
+    aws elbv2 create-target-group --name firefly3-tg --protocol HTTP --port 80 \
+    --vpc-id vpc-main --ip-address-type [ipv4]
+    #You'll receive output with ARN of Target Group which you should save for later usage.  
+    ```      
+
+    #### Register target on ALB
+      
+    ```            
+    aws elbv2 register-targets --target-group-arn targetgroup-arn  \
+    --targets Id=INSTANCEID
+    ```   
+      
+    #### Create listener on ALB (with TLS - assuming that we already have certificate)
+      
+    ```            
+    aws elbv2 create-listener --load-balancer-arn loadbalancer-arn \
+    --protocol HTTPS --port 443  \
+    --certificates CertificateArn=CERTIFICATE_ARN \
+    --default-actions Type=forward,TargetGroupArn=TARGET_GROUP_ARN
+    ```         
+     
+    #### Attach Load balancer with Autoscaling group
+      
+    ```             
+    aws attach-load-balancers \
+    --auto-scaling-group-name Firefly3-ASG
+    --load-balancer-names Firefly3-ALB
+    ```               
+      
+    </p>
+    </details> 
   
-```
-aws autoscaling create-auto-scaling-group \
-    --auto-scaling-group-name WebServerASG \
-    --launch-template "LaunchTemplateName=TemplateWebServer" \
-    --min-size 2 --max-size 5 --desired-capacity 2 
-    --availability-zones "eu-central-1a" "eu-central-1b"
-```      
-  
-</p>
-</details>  
  - (Optional) For global availability in lesser latency AWS Global Accelerator can be used on top of ALB. It will also add extra security layer against DDOS attacks
- - For availability on N26.com domain Route53 service should be configured and domainname of our ALB/Global Accelerator should be added as a new alias record.
+ 
+  - For availability on N26.com domain Route53 service should be configured and domainname of our ALB/Global Accelerator should be added as a new alias record.
 
 ## Networking
 Because application will be hosted in single region multi AZ environment, certain network configurations shoud be met on VPC creation.
